@@ -8,8 +8,8 @@ export class ProductController {
   constructor(private productService: ProductService) {}
 
   @Get()
-  getAll(): ProductDto[] {
-    return [];
+  getAll() {
+    return this.productService.getAllProducts();
   }
 
   @Post('/new')

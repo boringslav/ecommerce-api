@@ -6,6 +6,15 @@ import { ProductDto } from './dto';
 export class ProductService {
   constructor(private repository: RepositoryService) {}
 
+  async getAllProducts() {
+    try {
+      const products = await this.repository.product.findMany();
+      return products;
+    } catch (e) {
+      throw new Error(e.message());
+    }
+  }
+
   async createProduct(body: ProductDto) {
     try {
       const product = await this.repository.product.create({
