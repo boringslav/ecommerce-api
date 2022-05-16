@@ -15,5 +15,5 @@ model Product {
   name        String
   description String
   image       String
-  price       Int
+  price       Float @default(0.00)
 }
