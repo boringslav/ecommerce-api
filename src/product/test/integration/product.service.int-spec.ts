@@ -1,18 +1,36 @@
 import { Test } from '@nestjs/testing';
 import { AppModule } from '../../../app.module';
 import { RepositoryService } from '../../../repository/repository.service';
+import { ProductService } from '../../product.service';
+import { ProductDto } from '../../dto';
 
 describe('ProductService Integration', () => {
-  beforeAll(async () => {
-    let repository: RepositoryService;
+  let repository: RepositoryService;
+  let productService: ProductService;
 
+  beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    // eslint-disable-next-line prefer-const
     repository = moduleRef.get(RepositoryService);
-    // await repository.cleanDatabase();
+    productService = moduleRef.get(ProductService);
+    await repository.cleanDatabase();
   });
-  it.todo('Should pass');
+
+  describe('Create Product', () => {
+    it('Should create Product', async () => {
+      const productDTO: ProductDto = {
+        name: 'BMW e92 335I',
+        description: 'Super fast borkomobile',
+        price: 15000,
+        image:
+          'https://media.schmiedmann.com/media/79312/bmw_335i_e92_by_schmiedmann_finland_hdr03.jpg?maxwidth=1024&maxheight=768',
+      };
+      const product = await productService.createProduct(productDTO);
+      expect(product.name).toBe(productDTO.name);
+      expect(product.price).toBe(productDTO.price);
+      expect(product.id).toBeDefined();
+    });
+  });
 });
