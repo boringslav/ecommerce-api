@@ -18,9 +18,8 @@ export class ProductService {
   async getProductById(id: string) {
     try {
       const product = await this.repository.product.findFirst({
-        where: { id: id.toString() },
+        where: { id },
       });
-      console.log('Product: ', product);
       return product;
     } catch (e) {
       console.error(e);
@@ -49,15 +48,26 @@ export class ProductService {
   async editProduct(body: ProductDto, id: string) {
     try {
       const product = await this.repository.product.update({
-        where: {
-          id: id.toString(),
-        },
+        where: { id },
         data: { ...body },
       });
 
       return product;
     } catch (e) {
       console.log('Error: ', e.message);
+    }
+  }
+
+  async deleteProduct(id: string) {
+    try {
+      console.log('ID: ', id);
+      const deletedProduct = await this.repository.product.delete({
+        where: { id },
+      });
+      return deletedProduct;
+    } catch (e) {
+      console.log(e);
+      return e;
     }
   }
 }
