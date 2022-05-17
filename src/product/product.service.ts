@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RepositoryService } from '../repository/repository.service';
 import { ProductDto } from './dto';
 
@@ -20,10 +20,13 @@ export class ProductService {
       const product = await this.repository.product.findFirst({
         where: { id },
       });
+
+      if (!product) {
+        throw new HttpException(`User Not Found!`, HttpStatus.NOT_FOUND);
+      }
       return product;
     } catch (e) {
-      console.error(e);
-      return e;
+      throw e;
     }
   }
 
@@ -54,20 +57,18 @@ export class ProductService {
 
       return product;
     } catch (e) {
-      console.log('Error: ', e.message);
+      throw e;
     }
   }
 
   async deleteProduct(id: string) {
     try {
-      console.log('ID: ', id);
       const deletedProduct = await this.repository.product.delete({
         where: { id },
       });
       return deletedProduct;
     } catch (e) {
-      console.log(e);
-      return e;
+      throw e;
     }
   }
 }
