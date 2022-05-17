@@ -11,7 +11,20 @@ export class ProductService {
       const products = await this.repository.product.findMany();
       return products;
     } catch (e) {
-      throw new Error(e.message());
+      return e;
+    }
+  }
+
+  async getProductById(id: string) {
+    try {
+      const product = await this.repository.product.findFirst({
+        where: { id: id.toString() },
+      });
+      console.log('Product: ', product);
+      return product;
+    } catch (e) {
+      console.error(e);
+      return e;
     }
   }
 
@@ -30,6 +43,21 @@ export class ProductService {
       return product;
     } catch (e) {
       throw new Error(e.message);
+    }
+  }
+
+  async editProduct(body: ProductDto, id: string) {
+    try {
+      const product = await this.repository.product.update({
+        where: {
+          id: id.toString(),
+        },
+        data: { ...body },
+      });
+
+      return product;
+    } catch (e) {
+      console.log('Error: ', e.message);
     }
   }
 }
