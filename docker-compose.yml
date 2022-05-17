@@ -9,8 +9,11 @@ services:
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: ecommerce
 
-    networks:
-      - ecommerce
-
-networks:
-  ecommerce:
+  test-db:
+    image: postgres
+    ports:
+      - 5441:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: ecommerce
