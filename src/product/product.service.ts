@@ -11,7 +11,7 @@ export class ProductService {
       const products = await this.repository.product.findMany();
       return products;
     } catch (e) {
-      return e;
+      throw e;
     }
   }
 
