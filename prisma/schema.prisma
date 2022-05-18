@@ -28,7 +28,7 @@ model User {
 
   firstName String?
   lastName  String?
-  role Role @default(USER)
+  role      Role    @default(USER)
 
   @@map("users")
 }
