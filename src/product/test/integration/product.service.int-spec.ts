@@ -33,4 +33,23 @@ describe('ProductService Integration', () => {
       expect(product.id).toBeDefined();
     });
   });
+
+  describe('Get Product by ID', () => {
+    it('Should get existing product by ID', async () => {
+      const productDTO: ProductDto = {
+        name: 'BMW e92 335I',
+        description: 'Super fast borkomobile',
+        price: 15000,
+        image:
+          'https://media.schmiedmann.com/media/79312/bmw_335i_e92_by_schmiedmann_finland_hdr03.jpg?maxwidth=1024&maxheight=768',
+      };
+      const { id } = await productService.createProduct(productDTO);
+
+      const product = await productService.getProductById(id);
+      expect(product.name).toBe(productDTO.name);
+      expect(product.price).toBe(productDTO.price);
+      expect(product.image).toBe(productDTO.image);
+      expect(product.description).toBe(productDTO.description);
+    });
+  });
 });
