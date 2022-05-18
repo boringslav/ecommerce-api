@@ -91,4 +91,54 @@ describe('ProductService Integration', () => {
       expect(products.at(1).price).toBe(product2.price);
     });
   });
+
+  describe('Delete Product By ID', () => {
+    it('Should Delete A Product', async () => {
+      const productDTO: ProductDto = {
+        name: 'BMW e92 335I',
+        description: 'Super fast borkomobile',
+        price: 15000,
+        image:
+          'https://media.schmiedmann.com/media/79312/bmw_335i_e92_by_schmiedmann_finland_hdr03.jpg?maxwidth=1024&maxheight=768',
+      };
+
+      const { id } = await productService.createProduct(productDTO);
+      const deletedProduct = await productService.deleteProduct(id);
+      expect(deletedProduct.id).toBe(id);
+
+      const allProducts = await productService.getAllProducts();
+      expect(allProducts).toEqual([]);
+    });
+  });
+
+  describe('Update Product', () => {
+    it('Should Update product when provided with valid id and product information', async () => {
+      const product: ProductDto = {
+        name: 'BMW e92 335I',
+        description: 'Super fast borkomobile',
+        price: 15000,
+        image:
+          'https://media.schmiedmann.com/media/79312/bmw_335i_e92_by_schmiedmann_finland_hdr03.jpg?maxwidth=1024&maxheight=768',
+      };
+
+      const updatedProductData: ProductDto = {
+        name: 'Lamborghini Huracan Evo',
+        description: 'The fastest borkomobile',
+        price: 150000,
+        image:
+          'https://www.hartvoorautos.nl/wp-content/uploads/2020/04/lamborghini-huracan-evo-by-novitec.jpg',
+      };
+
+      const { id } = await productService.createProduct(product);
+      const updatedProduct = await productService.editProduct(
+        updatedProductData,
+        id,
+      );
+
+      expect(updatedProduct.id).toBe(id);
+      expect(updatedProduct.price).toBe(updatedProductData.price);
+      expect(updatedProduct.name).toBe(updatedProductData.name);
+      expect(updatedProduct.description).toBe(updatedProductData.description);
+    });
+  });
 });
