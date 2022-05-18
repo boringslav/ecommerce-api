@@ -15,5 +15,25 @@ model Product {
   name        String
   description String
   image       String
-  price       Float @default(0.00)
+  price       Float  @default(0.00)
+
+  @@map("products")
+}
+
+model User {
+  id String @id @default(cuid())
+
+  email String @unique
+  hash  String
+
+  firstName String?
+  lastName  String?
+  role Role @default(USER)
+
+  @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
 }
