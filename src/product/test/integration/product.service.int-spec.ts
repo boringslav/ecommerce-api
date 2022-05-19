@@ -4,7 +4,7 @@ import { RepositoryService } from '../../../repository/repository.service';
 import { ProductService } from '../../product.service';
 import { ProductDto } from '../../dto';
 
-describe('ProductService Integration', () => {
+describe('Product Service Integration', () => {
   let repository: RepositoryService;
   let productService: ProductService;
 
