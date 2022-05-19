@@ -6,19 +6,19 @@ import { UserDto } from './dto';
 export class UserService {
   constructor(private repositoryService: RepositoryService) {}
 
-  getAllUsers() {
+  async getAllUsers() {
     try {
-      const users = this.repositoryService.user.findMany();
+      const users = await this.repositoryService.user.findMany();
       return users;
     } catch (e) {
       throw e;
     }
   }
 
-  createUser(body: UserDto) {
+  async createUser(body: UserDto) {
     try {
       const { email, password, firstName, lastName, role } = body;
-      const user = this.repositoryService.user.create({
+      const user = await this.repositoryService.user.create({
         data: { email, hash: password, firstName, lastName, role },
       });
       return user;
