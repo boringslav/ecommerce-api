@@ -15,6 +15,17 @@ export class UserService {
     }
   }
 
+  async getUserById(id: string) {
+    try {
+      const user = await this.repositoryService.user.findFirst({
+        where: { id },
+      });
+      return user;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   async createUser(body: UserDto) {
     try {
       const { email, password, firstName, lastName, role } = body;
