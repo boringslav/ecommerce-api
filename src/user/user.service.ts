@@ -6,6 +6,15 @@ import { UserDto } from './dto';
 export class UserService {
   constructor(private repositoryService: RepositoryService) {}
 
+  getAllUsers() {
+    try {
+      const users = this.repositoryService.user.findMany();
+      return users;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   createUser(body: UserDto) {
     try {
       const { email, password, firstName, lastName, role } = body;
