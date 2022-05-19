@@ -48,6 +48,25 @@ describe('User Service Integration', () => {
       expect(savedUser.firstName).toBe(user.firstName);
       expect(savedUser.lastName).toBe(user.lastName);
     });
-    it.todo('Should throw an error if email is taken');
+    it('Should throw an error if email is taken', async () => {
+      const user: UserDto = {
+        email: 'borislav.stoyanov@musala.com',
+        password: '123123',
+        firstName: 'Borislav',
+        lastName: 'Stoyanov',
+        role: UserRoleDto.ADMIN,
+      };
+
+      const savedUser = await userService.createUser(user);
+
+      /**
+       * Couldn`t do it with toThrow() method
+       */
+      try {
+        await userService.createUser(user);
+      } catch (e) {
+        expect(e.message).toBe('Credentials taken');
+      }
+    });
   });
 });
