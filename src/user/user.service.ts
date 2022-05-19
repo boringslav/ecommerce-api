@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { RepositoryService } from '../repository/repository.service';
 import { UpdateUserDto, UserDto } from './dto';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 @Injectable()
 export class UserService {
@@ -34,6 +35,12 @@ export class UserService {
       });
       return user;
     } catch (e) {
+      if (e instanceof PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          throw new ForbiddenException('Credentials taken');
+        }
+        throw e;
+      }
       throw e;
     }
   }
@@ -46,6 +53,12 @@ export class UserService {
       });
       return user;
     } catch (e) {
+      if (e instanceof PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          throw new ForbiddenException('Credentials taken');
+        }
+        throw e;
+      }
       throw e;
     }
   }
