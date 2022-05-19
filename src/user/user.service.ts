@@ -37,4 +37,18 @@ export class UserService {
       throw e;
     }
   }
+
+  async deleteUser(id: string) {
+    try {
+      const deletedUser = await this.repositoryService.user.delete({
+        where: { id },
+        select: {
+          id: true,
+        },
+      });
+      return deletedUser;
+    } catch (e) {
+      throw e;
+    }
+  }
 }
