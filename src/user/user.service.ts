@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RepositoryService } from '../repository/repository.service';
-import { UserDto } from './dto';
+import { UpdateUserDto, UserDto } from './dto';
 
 @Injectable()
 export class UserService {
@@ -31,6 +31,18 @@ export class UserService {
       const { email, password, firstName, lastName, role } = body;
       const user = await this.repositoryService.user.create({
         data: { email, hash: password, firstName, lastName, role },
+      });
+      return user;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async updateUser(body: UpdateUserDto, id: string) {
+    try {
+      const user = await this.repositoryService.user.update({
+        where: { id },
+        data: { ...body },
       });
       return user;
     } catch (e) {
