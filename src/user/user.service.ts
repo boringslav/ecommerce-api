@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { RepositoryService } from '../repository/repository.service';
 import { UpdateUserDto, UserDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
@@ -21,6 +25,9 @@ export class UserService {
       const user = await this.repositoryService.user.findFirst({
         where: { id },
       });
+      if (!user) {
+        throw new NotFoundException('User doesn`t exist!');
+      }
       return user;
     } catch (e) {
       throw e;

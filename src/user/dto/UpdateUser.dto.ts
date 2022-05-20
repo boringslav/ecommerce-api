@@ -4,21 +4,21 @@ import { UserRoleDto } from './index';
 export class UpdateUserDto {
   @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string;
 
   @IsOptional()
   @IsString()
-  password: string;
+  password?: string;
 
   @IsOptional()
   @IsString()
-  firstName: string;
+  firstName?: string;
 
   @IsOptional()
   @IsString()
-  lastName: string;
+  lastName?: string;
 
   @IsOptional()
   @IsString()
-  role: UserRoleDto;
+  role?: UserRoleDto;
 }
