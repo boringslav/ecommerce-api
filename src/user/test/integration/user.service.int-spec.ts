@@ -69,4 +69,48 @@ describe('User Service Integration', () => {
       }
     });
   });
+  describe('Get an User', () => {
+    it('Should return a user when a user exists', async () => {
+      const user: UserDto = {
+        email: 'borislav.stoyanov@musala.com',
+        password: '123123',
+      };
+
+      const savedUser = await userService.createUser(user);
+      const foundUser = await userService.getUserById(savedUser.id);
+
+      expect(foundUser.email).toBe(user.email);
+      expect(foundUser.hash).toBeDefined();
+    });
+    it('Should throw an error if the user doesn`t exist', async () => {
+      try {
+        await userService.getUserById('not existing id');
+      } catch (e) {
+        expect(e.message).toBe('User doesn`t exist!');
+      }
+    });
+
+    describe('Get All Users', () => {
+      it('Should return an array of all users', async () => {
+        const user: UserDto = {
+          email: 'borislav.stoyanov@musala.com',
+          password: '123123',
+        };
+        const user2: UserDto = {
+          email: 'borislav.stoyanov1@musala.com',
+          password: '123123',
+        };
+
+        await userService.createUser(user);
+        await userService.createUser(user2);
+        const users = await userService.getAllUsers();
+
+        expect(users.at(0).email).toBe(user.email);
+        expect(users.at(1).email).toBe(user2.email);
+      });
+      it('Should return an empty array if there are no users', async () => {
+        expect(await userService.getAllUsers()).toEqual([]);
+      });
+    });
+  });
 });
