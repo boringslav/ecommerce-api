@@ -161,4 +161,16 @@ describe('User Service Integration', () => {
       'Should throw if the logged in user is not ADMIN or the user that the ID belongs',
     );
   });
+  describe('Delete an User', () => {
+    it('Should Delete existing user by ID', async () => {
+      const user: UserDto = {
+        email: 'borislav.stoyanov@musala.com',
+        password: '123123',
+      };
+      const { id } = await userService.createUser(user);
+      await userService.deleteUser(id);
+      const users = await userService.getAllUsers();
+      expect(users).toEqual([]);
+    });
+  });
 });
