@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RepositoryService } from '../repository/repository.service';
 import { OrderDetailsDto } from './dto/OrderDetails.dto';
+import { UpdateOrderDatailsDTO } from './dto';
 
 @Injectable()
 export class OrderDetailsService {
@@ -49,6 +50,19 @@ export class OrderDetailsService {
       });
 
       return orderDetail;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async updateOrderDetails(body: UpdateOrderDatailsDTO, id: string) {
+    try {
+      const updatedOrderDetails = await this.repository.orderDetail.update({
+        where: { id },
+        data: { ...body },
+      });
+      console.log('Updated Order Details', updatedOrderDetails);
+      return updatedOrderDetails;
     } catch (e) {
       throw e;
     }
