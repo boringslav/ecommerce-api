@@ -22,7 +22,7 @@ export class ProductService {
       });
 
       if (!product) {
-        throw new HttpException(`User Not Found!`, HttpStatus.NOT_FOUND);
+        throw new HttpException(`Product Not Found!`, HttpStatus.NOT_FOUND);
       }
       return product;
     } catch (e) {
