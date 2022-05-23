@@ -30,6 +30,14 @@ model User {
   lastName  String?
   role      Role    @default(USER)
 
+  address String?
+  city    String?
+  country String?
+  zip     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+
   @@map("users")
 }
 
