@@ -17,6 +17,8 @@ model Product {
   image       String
   price       Float  @default(0.00)
 
+  orderDetails OrderDetail[]
+
   @@map("products")
 }
 
@@ -35,13 +37,50 @@ model User {
   country String?
   zip     String?
 
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+  orders    Order[]
 
   @@map("users")
+}
+
+model Order {
+  id String @id @default(cuid())
+
+  customer   User?  @relation(fields: [customerId], references: [id])
+  customerId String
+
+  amount          Float       @default(0.00)
+  shippingAddress String
+  orderDate       DateTime    @default(now())
+  orderStatus     OrderStatus @default(PENDING)
+
+  @@map("orders")
+  OrderDetail OrderDetail[]
+}
+
+model OrderDetail {
+  id String @id @default(cuid())
+
+  order   Order? @relation(fields: [orderId], references: [id])
+  orderId String
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String
+
+  price    Float
+  quantity Int
+
+  @@map("order_detals")
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+enum OrderStatus {
+  COMPLETED
+  PENDING
+  CANCELLED
 }
