@@ -7,7 +7,9 @@ export class OrderDetailsController {
   constructor(private orderDetailsService: OrderDetailsService) {}
 
   @Get()
-  public getAll() {}
+  public getAll() {
+    return this.orderDetailsService.getAllOrderDetails();
+  }
 
   @Get('/id')
   public getById() {}

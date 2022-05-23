@@ -6,6 +6,16 @@ import { OrderDetailsDto } from './dto/OrderDetails.dto';
 export class OrderDetailsService {
   constructor(private repository: RepositoryService) {}
 
+  async getAllOrderDetails() {
+    try {
+      const orderDetails = await this.repository.orderDetail.findMany();
+      return orderDetails;
+    } catch (e) {
+      console.log(e.message);
+      throw e;
+    }
+  }
+
   async createOrderDetail(body: OrderDetailsDto) {
     try {
       const product = await this.repository.product.findFirst({
