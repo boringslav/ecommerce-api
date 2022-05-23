@@ -36,9 +36,29 @@ export class UserService {
 
   async createUser(body: UserDto) {
     try {
-      const { email, password, firstName, lastName, role } = body;
+      const {
+        email,
+        password: hash,
+        firstName,
+        lastName,
+        role,
+        city,
+        zip,
+        country,
+        address,
+      } = body;
       const user = await this.repositoryService.user.create({
-        data: { email, hash: password, firstName, lastName, role },
+        data: {
+          email,
+          hash,
+          firstName,
+          lastName,
+          role,
+          city,
+          zip,
+          country,
+          address,
+        },
       });
       return user;
     } catch (e) {
