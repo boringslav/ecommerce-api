@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RepositoryService } from '../repository/repository.service';
 import { OrderDetailsDto } from './dto/OrderDetails.dto';
 
@@ -12,6 +12,22 @@ export class OrderDetailsService {
       return orderDetails;
     } catch (e) {
       console.log(e.message);
+      throw e;
+    }
+  }
+
+  async getOrderDetailById(id: string) {
+    try {
+      const orderDetail = await this.repository.orderDetail.findUnique({
+        where: { id },
+      });
+
+      if (!orderDetail) {
+        throw new HttpException(`OrderDetail Not Found!`, HttpStatus.NOT_FOUND);
+      }
+
+      return orderDetail;
+    } catch (e) {
       throw e;
     }
   }
