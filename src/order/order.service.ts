@@ -6,6 +6,15 @@ import { CreateOrderDto } from './dto/';
 export class OrderService {
   constructor(private repository: RepositoryService) {}
 
+  async getOrders() {
+    try {
+      const orders = await this.repository.order.findMany();
+      return orders;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   async createOrder(body: CreateOrderDto) {
     try {
       // eslint-disable-next-line prefer-const
