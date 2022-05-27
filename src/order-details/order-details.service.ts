@@ -35,16 +35,19 @@ export class OrderDetailsService {
 
   async createOrderDetail(body: OrderDetailsDto) {
     try {
+      const { productId, quantity } = body;
       const product = await this.repository.product.findFirst({
-        where: { id: body.productId },
+        where: { id: productId },
       });
 
-      const price = product.price * body.quantity;
+      console.log('Product: ', product);
+
+      const price = product.price * quantity;
 
       const orderDetail = await this.repository.orderDetail.create({
         data: {
-          productId: body.productId,
-          quantity: body.quantity,
+          productId,
+          quantity,
           price,
         },
       });

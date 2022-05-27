@@ -51,11 +51,11 @@ model Order {
   customerId String
 
   amount          Float       @default(0.00)
-  shippingAddress String
+  shippingAddress String      @default("")
   orderDate       DateTime    @default(now())
   orderStatus     OrderStatus @default(PENDING)
 
-  OrderDetail OrderDetail[]
+  orderDetails OrderDetail[]
 
   @@map("orders")
 }
@@ -63,8 +63,8 @@ model Order {
 model OrderDetail {
   id String @id @default(cuid())
 
-  order   Order? @relation(fields: [orderId], references: [id])
-  orderId String
+  order   Order?  @relation(fields: [orderId], references: [id])
+  orderId String?
 
   product   Product? @relation(fields: [productId], references: [id])
   productId String
