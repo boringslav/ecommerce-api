@@ -55,8 +55,6 @@ model Order {
   orderDate       DateTime    @default(now())
   orderStatus     OrderStatus @default(PENDING)
 
-  orderDetails OrderDetail[]
-
   @@map("orders")
 }
 

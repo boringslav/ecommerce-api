@@ -8,8 +8,7 @@ export class OrderService {
 
   async getOrders() {
     try {
-      const orders = await this.repository.order.findMany();
-      return orders;
+      return await this.repository.order.findMany();
     } catch (e) {
       throw e;
     }
@@ -20,6 +19,7 @@ export class OrderService {
       // eslint-disable-next-line prefer-const
       let { customerId, orderDetailsList, shippingAddress } = body;
       let amount = 0;
+
       const customer = await this.repository.user.findUnique({
         where: { id: customerId },
       });
@@ -31,9 +31,9 @@ export class OrderService {
         data: {
           customerId,
         },
-        select: {
-          id: true,
-        },
+        // select: {
+        //   id: true,
+        // },
       });
 
       for (const item of orderDetailsList) {
@@ -44,21 +44,18 @@ export class OrderService {
         amount += Number(orderDetail.price);
       }
 
-      /**
-       * TODO - There is an error when running the request, but the data is written in db correctly
-       */
-      const orderWithDetails = this.repository.order.updateMany({
-        where: { id: order.id },
-        data: {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          orderDetails: { set: { id: orderDetailsList } },
-          amount,
-          shippingAddress,
-        },
-      });
+      return order;
 
-      return orderWithDetails;
+      // return this.repository.order.update({
+      //   where: { id: order.id },
+      //   data: {
+      //     amount,
+      //     shippingAddress,
+      //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //     // @ts-ignore
+      //     orderDetails: { set: orderDetailsList },
+      //   },
+      // });
     } catch (e) {
       throw e;
     }
