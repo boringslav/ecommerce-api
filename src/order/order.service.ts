@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { RepositoryService } from '../repository/repository.service';
 import { CreateOrderDto } from './dto/';
 
@@ -9,6 +9,19 @@ export class OrderService {
   async getOrders() {
     try {
       return await this.repository.order.findMany();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getOrderById(id: string) {
+    try {
+      const order = await this.repository.order.findUnique({
+        where: { id },
+      });
+      if (!order) {
+        throw new NotFoundException('Order does not exist');
+      }
     } catch (e) {
       throw e;
     }
