@@ -50,11 +50,11 @@ model Order {
   customer   User?  @relation(fields: [customerId], references: [id])
   customerId String
 
-  amount          Float       @default(0.00)
-  shippingAddress String      @default("")
-  orderDate       DateTime    @default(now())
-  orderStatus     OrderStatus @default(PENDING)
-
+  amount          Float         @default(0.00)
+  shippingAddress String        @default("")
+  orderDate       DateTime      @default(now())
+  orderStatus     OrderStatus   @default(PENDING)
+  orderDetails    OrderDetail[]
   @@map("orders")
 }
 

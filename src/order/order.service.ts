@@ -31,9 +31,6 @@ export class OrderService {
         data: {
           customerId,
         },
-        // select: {
-        //   id: true,
-        // },
       });
 
       for (const item of orderDetailsList) {
@@ -44,18 +41,15 @@ export class OrderService {
         amount += Number(orderDetail.price);
       }
 
-      return order;
-
-      // return this.repository.order.update({
-      //   where: { id: order.id },
-      //   data: {
-      //     amount,
-      //     shippingAddress,
-      //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //     // @ts-ignore
-      //     orderDetails: { set: orderDetailsList },
-      //   },
-      // });
+      return await this.repository.order.update({
+        where: {
+          id: order.id,
+        },
+        data: {
+          amount,
+          shippingAddress,
+        },
+      });
     } catch (e) {
       throw e;
     }
