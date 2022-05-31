@@ -59,7 +59,33 @@ describe('Order Detail Service Integration', () => {
       expect(foundOrderDetail.productId).toBe(orderDetail.productId);
       expect(foundOrderDetail.quantity).toBe(orderDetail.quantity);
     });
-    it.todo('Should get All Order Details');
+    it('Should get All Order Details', async () => {
+      const savedDetails = await repository.orderDetail.createMany({
+        data: [
+          {
+            productId: product.id,
+            quantity: 2,
+            price: product.price * 2,
+          },
+          {
+            productId: product.id,
+            quantity: 2,
+            price: product.price * 2,
+          },
+        ],
+      });
+
+      const foundDetails = await orderDetailsService.getAllOrderDetails();
+      expect(foundDetails.length).toBe(savedDetails.count);
+      expect(foundDetails[0].productId).toBeDefined();
+      expect(foundDetails[0].productId).toEqual(product.id);
+      expect(foundDetails[0].quantity).toEqual(2);
+      expect(foundDetails[0].price).toEqual(product.price * 2);
+      expect(foundDetails[1].productId).toBeDefined();
+      expect(foundDetails[1].productId).toEqual(product.id);
+      expect(foundDetails[1].quantity).toEqual(2);
+      expect(foundDetails[1].price).toEqual(product.price * 2);
+    });
     it('Should return an empty array if there are no Product Details', async () => {
       expect(await orderDetailsService.getAllOrderDetails()).toEqual([]);
     });
