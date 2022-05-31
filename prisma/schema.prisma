@@ -65,7 +65,7 @@ model OrderDetail {
   orderId String?
 
   product   Product? @relation(fields: [productId], references: [id])
-  productId String
+  productId String?
 
   price    Float
   quantity Int

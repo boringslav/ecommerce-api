@@ -40,8 +40,6 @@ export class OrderDetailsService {
         where: { id: productId },
       });
 
-      console.log('Product: ', product);
-
       const price = product.price * quantity;
 
       const orderDetail = await this.repository.orderDetail.create({

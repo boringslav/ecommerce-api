@@ -46,8 +46,6 @@ describe('Order Detail Service Integration', () => {
   });
 
   describe('Get Order Details', () => {
-    it.todo('Should get All Order Details');
-    it.todo('Should return an empty array if there are no Product Details');
     it('Should return an Order Detail', async () => {
       const orderDetail = await orderDetailsService.createOrderDetail({
         productId: product.id,
@@ -60,6 +58,10 @@ describe('Order Detail Service Integration', () => {
       expect(foundOrderDetail.id).toBe(orderDetail.id);
       expect(foundOrderDetail.productId).toBe(orderDetail.productId);
       expect(foundOrderDetail.quantity).toBe(orderDetail.quantity);
+    });
+    it.todo('Should get All Order Details');
+    it('Should return an empty array if there are no Product Details', async () => {
+      expect(await orderDetailsService.getAllOrderDetails()).toEqual([]);
     });
   });
 });
