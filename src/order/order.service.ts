@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { RepositoryService } from '../repository/repository.service';
-import { CreateOrderDto } from './dto/';
+import { CreateOrderDto, UpdateOrderDto } from './dto';
 
 @Injectable()
 export class OrderService {
@@ -66,5 +66,48 @@ export class OrderService {
     } catch (e) {
       throw e;
     }
+  }
+
+  async editOrder(id: string, data: UpdateOrderDto) {
+    try {
+      const { shippingAddress, orderDetailsList } = data;
+      let amount = 0;
+
+      const order = await this.repository.order.findUnique({ where: { id } });
+      const orderDetails = await this.repository.orderDetail.findMany({
+        where: {
+          orderId: id,
+        },
+      });
+
+      const detailsToDelete = orderDetails.filter(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        (orderDetail) => !orderDetailsList.includes(orderDetail.id),
+      );
+
+      for (const detail of detailsToDelete) {
+        await this.repository.orderDetail.delete({
+          where: { id: detail.id },
+        });
+      }
+
+      for (const detailId of orderDetailsList) {
+        const currDetail = await this.repository.orderDetail.update({
+          where: { id: detailId },
+          data: { orderId: id },
+        });
+
+        amount += currDetail.price;
+      }
+
+      return await this.repository.order.update({
+        where: { id },
+        data: {
+          shippingAddress: shippingAddress,
+          amount,
+        },
+      });
+    } catch (e) {}
   }
 }
