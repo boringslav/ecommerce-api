@@ -110,4 +110,18 @@ export class OrderService {
       });
     } catch (e) {}
   }
+
+  async deleteOrder(id: string) {
+    try {
+      await this.repository.orderDetail.deleteMany({
+        where: { orderId: { contains: id } },
+      });
+
+      return await this.repository.order.delete({
+        where: { id },
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
 }
