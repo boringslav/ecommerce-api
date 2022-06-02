@@ -90,4 +90,21 @@ describe('Order Detail Service Integration', () => {
       expect(await orderDetailsService.getAllOrderDetails()).toEqual([]);
     });
   });
+
+  describe('Update Order Detail', () => {
+    it('Should Update Order Detail', async () => {
+      const orderDetail = await orderDetailsService.createOrderDetail({
+        productId: product.id,
+        quantity: 1,
+      });
+
+      const updatedOrderDetail = await orderDetailsService.updateOrderDetails(
+        {
+          quantity: 2,
+        },
+        orderDetail.id,
+      );
+      expect(updatedOrderDetail.price).toEqual(orderDetail.price * 2);
+    });
+  });
 });
