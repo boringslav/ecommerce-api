@@ -90,7 +90,6 @@ describe('Order Detail Service Integration', () => {
       expect(await orderDetailsService.getAllOrderDetails()).toEqual([]);
     });
   });
-
   describe('Update Order Detail', () => {
     it('Should Update Order Detail', async () => {
       const orderDetail = await orderDetailsService.createOrderDetail({
@@ -105,6 +104,16 @@ describe('Order Detail Service Integration', () => {
         orderDetail.id,
       );
       expect(updatedOrderDetail.price).toEqual(orderDetail.price * 2);
+    });
+  });
+  describe('Delete Order Detail', () => {
+    it('Should Delete Order Detail', async () => {
+      const { id: orderId } = await orderDetailsService.createOrderDetail({
+        quantity: 2,
+        productId: product.id,
+      });
+      await orderDetailsService.deleteOrderDetails(orderId);
+      expect(await orderDetailsService.getAllOrderDetails()).toEqual([]);
     });
   });
 });
