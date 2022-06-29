@@ -35,16 +35,17 @@ export class OrderDetailsService {
 
   async createOrderDetail(body: OrderDetailsDto) {
     try {
+      const { productId, quantity } = body;
       const product = await this.repository.product.findFirst({
-        where: { id: body.productId },
+        where: { id: productId },
       });
 
-      const price = product.price * body.quantity;
+      const price = product.price * quantity;
 
       const orderDetail = await this.repository.orderDetail.create({
         data: {
-          productId: body.productId,
-          quantity: body.quantity,
+          productId,
+          quantity,
           price,
         },
       });
@@ -57,12 +58,38 @@ export class OrderDetailsService {
 
   async updateOrderDetails(body: UpdateOrderDatailsDTO, id: string) {
     try {
+      const { productId } = await this.repository.orderDetail.findFirst({
+        where: { id },
+        select: {
+          productId: true,
+        },
+      });
+
+      const product = await this.repository.product.findFirst({
+        where: { id: productId },
+      });
+
+      const { quantity } = body;
+      const price = product.price * quantity;
       const updatedOrderDetails = await this.repository.orderDetail.update({
         where: { id },
-        data: { ...body },
+        data: {
+          quantity: body.quantity,
+          price,
+        },
       });
-      console.log('Updated Order Details', updatedOrderDetails);
       return updatedOrderDetails;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async deleteOrderDetails(id: string) {
+    try {
+      const deletedOrderDetails = await this.repository.orderDetail.delete({
+        where: { id },
+      });
+      return deletedOrderDetails;
     } catch (e) {
       throw e;
     }

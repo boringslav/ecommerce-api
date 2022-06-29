@@ -36,11 +36,6 @@ export class ProductService {
         data: {
           ...body,
         },
-        select: {
-          id: true,
-          name: true,
-          price: true,
-        },
       });
       return product;
     } catch (e) {
